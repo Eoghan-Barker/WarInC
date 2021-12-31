@@ -1,0 +1,4 @@
+﻿  Source.c
+F:\GitHub\WarInC\WarProceduralProject\Source.c(12,6): warning C4101: 'playersCardChoice': unreferenced local variable
+F:\GitHub\WarInC\WarProceduralProject\Source.c(48,14): warning C4013: 'time' undefined; assuming extern returning int
+  WarProceduralProject.vcxproj -> F:\GitHub\WarInC\WarProceduralProject\Debug\WarProceduralProject.exe
