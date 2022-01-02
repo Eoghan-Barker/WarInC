@@ -5,6 +5,7 @@
 void shuffle(int *shuffledDeck);
 void deal(int *shuffledDeck, int *p1, int* p2, int* p3, int* p4);
 void chooseCard(int *playerHand, int player, int *card);
+void displayIntro();
 
 
 void main() {
@@ -16,9 +17,10 @@ void main() {
 	int player4Hand[13];
 
 	int chosenCard[4];
-	int playerPoints[4];
+	int playerPoints[4] = {0,0,0,0};
 
-	int i, rounds = 1, roundPoints;
+	int i, rounds = 1, roundPoints = 0, draw, winner, largest, drawCount, finalWinner = 0, highestScore = 0;
+	
 
 	
 
@@ -36,6 +38,8 @@ void main() {
 			deckOfCards[i] = (i+1) % 13;
 		}
 	}
+
+	displayIntro();
 
 
 	//Shuffle deck
@@ -56,23 +60,70 @@ void main() {
 		chooseCard(player3Hand, 2, chosenCard);
 		chooseCard(player4Hand, 3, chosenCard);
 
-		//Calculate points
-		//reset roundPoints
-		roundPoints = 0;
-		for (i = 0; i < 4; i++){
+		//Calculate points for current round
+		for (i = 0; i < 4; i++) {
 			roundPoints += chosenCard[i];
 		}
 
 		//Find winning card
+		//if any 2 cards = the largest they get put to 0 and loop runs again
+		//if draw count = 4 then it is a full tie and the points get rolled over to the next round
+		drawCount = 0;
+		do {
+			//find the largest card
+			largest = 0;
+			for (i = 0; i < 4; i++) {
+				if (largest < chosenCard[i]) {
+					largest = chosenCard[i];
+					//need to do this for checking draws
+					chosenCard[i] = 0;
+					winner = i;
+					draw = 0;
+				}
+			}
 
-
-		//Add to winners total
-
+			//check for draws
+			for (i = 0; i < 4; i++) {
+				if (largest == chosenCard[i]) {
+					chosenCard[i] = 0;
+					draw = 1;
+					drawCount++;
+				}
+			}
+		} while (draw == 1 && drawCount < 4);
+		
+		//Add to winners total and reset roundPoints
+		//Unless drawCount = 4, then roundPoints carry into next round
+		if (drawCount < 4)
+		{
+			playerPoints[winner] += roundPoints;
+			printf("Player %d wins %d points!\n\n", winner + 1, roundPoints);
+			roundPoints = 0;
+		}
+		else
+		{
+			printf("All Tie! Points will be carried into the next round\n\n");
+		}
 
 		rounds++;
-	} while (rounds != -1 || rounds <= 13);
+	} while (rounds != -1 && rounds <= 13);
 
+	//Calculate Overall winner
+	for (i = 0; i < 4; i++) {
+		if (highestScore < playerPoints[i]) {
+			highestScore = playerPoints[i];
+			finalWinner = i;
+		}
+	}
 			
+	//Final Output, winner, player scores
+	printf("Game Complete, Player %d wins!\n", finalWinner + 1);
+	printf("The Final Scores were:\n");
+	printf("Player 1: %d\n", playerPoints[0]);
+	printf("Player 2: %d\n", playerPoints[1]);
+	printf("Player 3: %d\n", playerPoints[2]);
+	printf("Player 4: %d\n", playerPoints[3]);
+	
 
 	
 	       
@@ -111,7 +162,7 @@ void deal(int* shuffledDeck, int* p1, int* p2, int* p3, int* p4) {
 void chooseCard(int* playerHand, int player, int* card) {
 	int i, input;
 
-	printf("Player %d hand: \n", player + 1);
+	printf("\nPlayer %d hand: \n", player + 1);
 	for (i = 0; i < 13; i++) {
 		printf("%d:%d\n", i, playerHand[i]);
 	}
@@ -125,6 +176,19 @@ void chooseCard(int* playerHand, int player, int* card) {
 		scanf("%d", input);
 	}
 
+	//store card being played, change value to -1 in deck
+	card[player] = playerHand[input];
 	playerHand[input] = -1;
-	card[player] = input;
+	
+}
+
+void displayIntro() {
+	printf("Welcome to War!\n");
+	printf("Each player has 13 cards in their hand\n");
+	printf("Choose the highest card to win. If two players choose the same card then the next highest card will win\n");
+	printf("If all cards tie another then the points are rolled over to the next round\n");
+	printf("Once a card has been played it can't be played again(represented by a -1)\n");
+	printf("Whoever has the most points after 13 rounds wins.\n\n\n");
+
+
 }
