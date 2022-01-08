@@ -1,20 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//file pointer
 FILE *fptr;
 
+//functions
 void createDeck(int *newDeck);
 void shuffle(int *shuffledDeck);
 void deal(int *shuffledDeck, int *p1, int* p2, int* p3, int* p4);
 void chooseCard(int *playerHand, int player, int *card);
-int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints, int roundPoints);
+int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints, int roundPoints, int players);
 int displayIntro();
-void gameComplete(int *playerPoints);
-void gameStatus(int* playerPoints, int rounds);
-void saveGame(int* p1Hand, int* p2Hand, int* p3Hand, int* p4Hand, int round, int* playerPoints);
-int loadGame(int* p1Hand, int* p2Hand, int* p3Hand, int* p4Hand, int round, int* playerPoints);
+void gameComplete(int *playerPoints, int players);
+void gameStatus(int* playerPoints, int rounds, int players);
+void saveGame(int* p1Hand, int* p2Hand, int* p3Hand, int* p4Hand, int round, int* playerPoints, int players);
+int loadGame(int* p1Hand, int* p2Hand, int* p3Hand, int* p4Hand, int round, int* playerPoints, int* players);
 int openFile(int mode);
 void closeFile();
+void newLoadExit();
 
 
 void main() {
@@ -26,7 +29,9 @@ void main() {
 	int player4Hand[13];
 	int playerPoints[4] = {0,0,0,0};
 
-	int rounds = 1, roundPoints = 0, continueCheck;
+	int rounds = 1, roundPoints = 0, continueCheck, players;
+	// pointer used to update players variable when loading a game
+	int *playerPointer = &players;
 	
 
 	
@@ -34,14 +39,27 @@ void main() {
 	//if displayIntro returns true the the game is loaded from a file
 	//if it returns false then a new game is created
 	if (displayIntro()) {
-		rounds = loadGame(player1Hand, player2Hand, player3Hand, player4Hand, rounds, playerPoints, roundPoints);
-		gameStatus(playerPoints, rounds);
+		// load game returns the number of rounds played to avoid using a pointer
+		rounds = loadGame(player1Hand, player2Hand, player3Hand, player4Hand, rounds, playerPoints, playerPointer);
+		gameStatus(playerPoints, rounds, players);
 	}
 	else {
 		createDeck(deckOfCards);
 		shuffle(deckOfCards);
 		deal(deckOfCards, player1Hand, player2Hand, player3Hand, player4Hand);
+		//get number of players
+		printf("Number of players (2-4): ");
+		scanf("%d", &players);
+		//make sure it is a valid number
+		while (players > 4 || players < 2)
+		{
+			printf("Invalid number of players, must be between 2 and 4\n");
+			printf("Number of players (2-4): ");
+			scanf("%d", &players);
+		}
+		
 	}
+	
 
 	
 
@@ -49,7 +67,7 @@ void main() {
 	do {
 		
 		//playRound returns the roundpoints, will be a 0 unless All cards tied so it can be carried into next round
-		roundPoints = playRound(rounds, player1Hand, player2Hand, player3Hand, player4Hand, playerPoints, roundPoints);
+		roundPoints = playRound(rounds, player1Hand, player2Hand, player3Hand, player4Hand, playerPoints, roundPoints, players);
 
 		//Ask user to continue, ouput game status, exit, exit and save
 		//while loop to bring user back to this menu when they choose output game status
@@ -58,8 +76,8 @@ void main() {
 		{
 			printf("1. Continue\n");
 			printf("2. Output game status\n");
-			printf("3. Exit\n");
-			printf("4. Exit and save\n");
+			printf("3. Exit current game\n");
+			printf("4. Exit current game and save\n");
 			printf("Enter option 1-4: ");
 			scanf("%d", &continueCheck);
 
@@ -68,15 +86,15 @@ void main() {
 			case 1: 
 				break;
 			case 2:
-				gameStatus(playerPoints, rounds);
+				gameStatus(playerPoints, rounds, players);
 				break;
 			case 3:
-				exit(0);
+				newLoadExit();
 				break;
 			case 4:
 				rounds++;
-				saveGame(player1Hand, player2Hand, player3Hand, player4Hand, rounds, playerPoints, roundPoints);
-				exit(0);
+				saveGame(player1Hand, player2Hand, player3Hand, player4Hand, rounds, playerPoints, players);
+				newLoadExit();
 				break;
 			default:
 				break;
@@ -88,12 +106,12 @@ void main() {
 	} while (rounds != -1 && rounds <= 13);
 
 	
-	gameComplete(playerPoints);
+	gameComplete(playerPoints, players);
 	
 	       
 }// end of main
 
-//using pointera to pass and return arrays from/to main
+//using pointer to pass and return arrays from/to main
 //populate deck of cards array
 void createDeck(int *newDeck) {
 	int i;
@@ -171,8 +189,8 @@ void chooseCard(int* playerHand, int player, int* card) {
 }// end of chooseCard function
 
 //play a round, ask players to choose a card, calculate the points for that round
-int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints, int roundPoints) {
-	int chosenCard[4];
+int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints, int roundPoints, int players) {
+	int chosenCard[4] = { -1, -1, -1, -1 };
 	int i, draw, winner, largest, drawCount, allTie;
 
 
@@ -180,14 +198,29 @@ int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints,
 
 	//Each player goes individually - print hand, ask for card to play
 	//Storing card values in array - player 1 = index 0 player 2 = index 1 etc.
-
-	chooseCard(p1, 0, chosenCard);
-	chooseCard(p2, 1, chosenCard);
-	chooseCard(p3, 2, chosenCard);
-	chooseCard(p4, 3, chosenCard);
+	switch (players)
+	{
+	case 2:
+		chooseCard(p1, 0, chosenCard);
+		chooseCard(p2, 1, chosenCard);
+		break;
+	case 3:
+		chooseCard(p1, 0, chosenCard);
+		chooseCard(p2, 1, chosenCard);
+		chooseCard(p3, 2, chosenCard);
+		break;
+	case 4:
+		chooseCard(p1, 0, chosenCard);
+		chooseCard(p2, 1, chosenCard);
+		chooseCard(p3, 2, chosenCard);
+		chooseCard(p4, 3, chosenCard);
+		break;
+	default:
+		break;
+	}
 
 	//Calculate points for current round
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < players; i++) {
 		roundPoints += chosenCard[i];
 	}
 
@@ -195,10 +228,11 @@ int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints,
 	//if any 2 cards = the largest they get put to 0 and loop runs again
 	//if draw count = 4 then it is a full tie and the points get rolled over to the next round
 	drawCount = 0;
+	draw = 0;
 	do {
 		//find the largest card
 		largest = 0;
-		for (i = 0; i < 4; i++) {
+		for (i = 0; i < players; i++) {
 			if (largest < chosenCard[i]) {
 				largest = chosenCard[i];
 				//need to do this for checking draws
@@ -209,7 +243,7 @@ int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints,
 		}
 
 		//check for draws
-		for (i = 0; i < 4; i++) {
+		for (i = 0; i < players; i++) {
 			if (largest == chosenCard[i]) {
 				chosenCard[i] = 0;
 				draw = 1;
@@ -219,8 +253,8 @@ int playRound(int rounds, int* p1, int* p2, int* p3, int* p4, int *playerPoints,
 	} while (draw == 1 && drawCount < 4);
 
 	//Add to winners total and reset roundPoints
-	//Unless drawCount = 4, then roundPoints carry into next round
-	if (drawCount < 4)
+	//Unless drawCount = players, then roundPoints carry into next round
+	if (drawCount < players)
 	{
 		playerPoints[winner] += roundPoints;
 		printf("\nPlayer %d wins %d points!\n\n", winner + 1, roundPoints);
@@ -256,11 +290,11 @@ int displayIntro() {
 
 //when all rounds are over
 //calculates winning player
-void gameComplete(int *playerPoints) {
+void gameComplete(int *playerPoints, int players) {
 	int i, highestScore = 0, finalWinner = 0;
 
 	//Calculate Overall winner
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < players; i++) {
 		if (highestScore < playerPoints[i]) {
 			highestScore = playerPoints[i];
 			finalWinner = i;
@@ -270,22 +304,24 @@ void gameComplete(int *playerPoints) {
 	//Output winner + player scores
 	printf("Game Complete, Player %d wins!\n", finalWinner + 1);
 	printf("The Final Scores were:\n");
-	gameStatus(playerPoints, 13);
+	gameStatus(playerPoints, 13, players);
 }
 
 //prints current round and points of each player
-void gameStatus(int* playerPoints, int rounds) {
+void gameStatus(int* playerPoints, int rounds, int players) {
+	int i;
+	
 	printf("\nRounds played: %d\n", rounds);
-	printf("Player 1: %d\n", playerPoints[0]);
-	printf("Player 2: %d\n", playerPoints[1]);
-	printf("Player 3: %d\n", playerPoints[2]);
-	printf("Player 4: %d\n\n\n", playerPoints[3]);
+	for (i = 0; i < players; i++)
+	{
+		printf("Player %d: %d\n", i+1, playerPoints[i]);
+	}
 }
 
 //opens file in write mode
 //prints each players hand and points to file
 //prints rounds played to file
-void saveGame(int *p1Hand, int *p2Hand, int* p3Hand, int* p4Hand, int round, int *playerPoints) {
+void saveGame(int *p1Hand, int *p2Hand, int* p3Hand, int* p4Hand, int round, int *playerPoints, int players) {
 	int openOk, i;
 
 	openOk = openFile(0);
@@ -315,8 +351,10 @@ void saveGame(int *p1Hand, int *p2Hand, int* p3Hand, int* p4Hand, int round, int
 			fprintf(fptr, "%d\n", playerPoints[i]);
 		}
 
-		//print current round and roundPoints to file
+		//print current round and players to file
 		fprintf(fptr, "%d\n", round);
+		fprintf(fptr, "%d\n", players);
+
 		
 	}
 
@@ -327,8 +365,8 @@ void saveGame(int *p1Hand, int *p2Hand, int* p3Hand, int* p4Hand, int round, int
 //opens file in read mode
 //reads players hands and points into arrays
 //reads in and returns the current round
-int loadGame(int* p1Hand, int* p2Hand, int* p3Hand, int* p4Hand, int round, int* playerPoints) {
-	int openOk, i;
+int loadGame(int* p1Hand, int* p2Hand, int* p3Hand, int* p4Hand, int round, int* playerPoints, int* players) {
+	int openOk, i, playerNum;
 
 	openOk = openFile(1);
 	if (openOk == 1) {
@@ -357,8 +395,8 @@ int loadGame(int* p1Hand, int* p2Hand, int* p3Hand, int* p4Hand, int round, int*
 			}
 
 			
-			//read current round and roundPoints from file
-			fscanf(fptr, "%d\n", &round);						return round;		
+			//read current round and players from file
+			fscanf(fptr, "%d\n", &round);			fscanf(fptr, "%d\n", &playerNum);			*players = playerNum;						return round;		
 	}
 	else {
 		printf("Error loading Game");
@@ -394,4 +432,20 @@ int openFile(int mode) {
 
 void closeFile() {
 	fclose(fptr);
+}
+
+void newLoadExit() {
+	int choice;
+
+	// if user enters 0 call main function to restart or if 1 then exit application
+	printf("Enter 0 to start a new game or load a saved game, Enter 1 to exit: ");
+	scanf("%d", &choice);
+
+	if (choice) {
+		exit(0);
+	}
+	else
+	{
+		main();
+	}
 }

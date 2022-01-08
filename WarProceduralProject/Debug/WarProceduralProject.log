@@ -1,18 +1,19 @@
 ﻿  Source.c
-F:\GitHub\WarInC\WarProceduralProject\Source.c(35,95): warning C4020: 'loadGame': too many actual parameters
-F:\GitHub\WarInC\WarProceduralProject\Source.c(75,88): warning C4020: 'saveGame': too many actual parameters
-F:\GitHub\WarInC\WarProceduralProject\Source.c(61,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(116,14): warning C4013: 'time' undefined; assuming extern returning int
-F:\GitHub\WarInC\WarProceduralProject\Source.c(155,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(161,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(173,43): warning C4101: 'allTie': unreferenced local variable
-F:\GitHub\WarInC\WarProceduralProject\Source.c(245,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(324,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(328,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(332,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(336,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(342,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(347,4): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(361,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-F:\GitHub\WarInC\WarProceduralProject\Source.c(364,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(52,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(58,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(82,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(137,14): warning C4013: 'time' undefined; assuming extern returning int
+F:\GitHub\WarInC\WarProceduralProject\Source.c(176,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(182,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(194,43): warning C4101: 'allTie': unreferenced local variable
+F:\GitHub\WarInC\WarProceduralProject\Source.c(284,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(376,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(380,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(384,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(388,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(394,5): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(399,4): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(415,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(418,10): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\GitHub\WarInC\WarProceduralProject\Source.c(442,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   WarProceduralProject.vcxproj -> F:\GitHub\WarInC\WarProceduralProject\Debug\WarProceduralProject.exe
