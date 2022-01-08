@@ -19,7 +19,7 @@ int openFile(int mode);
 void closeFile();
 void newLoadExit();
 
-
+//Eoghan Barker - G00397072
 void main() {
 	//Variables and Arrays
 	int deckOfCards[52];
@@ -305,6 +305,7 @@ void gameComplete(int *playerPoints, int players) {
 	printf("Game Complete, Player %d wins!\n", finalWinner + 1);
 	printf("The Final Scores were:\n");
 	gameStatus(playerPoints, 13, players);
+	newLoadExit();
 }
 
 //prints current round and points of each player
